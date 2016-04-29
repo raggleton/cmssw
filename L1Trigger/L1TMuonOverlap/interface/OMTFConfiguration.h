@@ -7,8 +7,7 @@
 #include <ostream>
 #include <memory>
 
-class L1TMuonOverlapParams;
-class XMLConfigReader;
+#include "CondFormats/L1TObjects/interface/L1TMuonOverlapParams.h"
 
 namespace edm{
   class ParameterSet;
@@ -51,108 +50,135 @@ class OMTFConfiguration{
 
  public:
 
-  OMTFConfiguration(const edm::ParameterSet & cfg);
+  typedef std::vector< std::pair<unsigned int, unsigned int> > vector1D_pair;
+  typedef std::vector<vector1D_pair > vector2D_pair;
+  typedef std::vector<vector2D_pair > vector3D_pair;
 
-  void configure(XMLConfigReader *aReader);
+  typedef std::vector<int> vector1D;
+  typedef std::vector<vector1D > vector2D;
+  typedef std::vector<vector2D > vector3D;
+  typedef std::vector<vector3D > vector4D;
+
+  OMTFConfiguration(){;};
 
   void configure(const L1TMuonOverlapParams* omtfParams);
 
   void initCounterMatrices();
   
+   ///Find logic region number using first input number
+  ///and then local phi value. The input and phi
+  ///ranges are taken from DB. 
+  unsigned int getRegionNumberFromMap(unsigned int iInput,
+				      unsigned int iRefLayer,					     
+				      int iPhi) const;
+  
+  ///Check if given referecne hit is
+  ///in phi range for some logic cone.
+  ///Care is needed arounf +Pi and +2Pi points
+  bool isInRegionRange(int iPhiStart,
+		       unsigned int coneSize,
+		       int iPhi) const;
+
+  ///Return global phi for beggining of given processor
+  ///Uses minim phi over all reference layers.
+  int globalPhiStart(unsigned int iProcessor) const;
+
+  ///Return layer number encoding subsystem, and
+  ///station number in a simple formula:
+  /// aLayer+100*detId.subdetId()
+  ///where aLayer is a layer number counting from vertex
+  uint32_t getLayerNumber(uint32_t rawId) const;
+
+  unsigned int fwVersion() const {return rawParams.fwVersion();};
+  float minPdfVal() const {return 0.001;};
+  unsigned int nLayers() const {return rawParams.nLayers();};
+  unsigned int nHitsPerLayer() const {return rawParams.nHitsPerLayer();};
+  unsigned int nRefLayers() const {return rawParams.nRefLayers();};
+  unsigned int nPhiBits() const {return rawParams.nPhiBits();};
+  unsigned int nPdfAddrBits() const {return rawParams.nPdfAddrBits();};
+  unsigned int nPdfValBits() const {return rawParams.nPdfValBits();};
+  unsigned int nPhiBins() const {return rawParams.nPhiBins();};
+  unsigned int nRefHits() const {return rawParams.nRefHits();};
+  unsigned int nTestRefHits() const {return rawParams.nTestRefHits();};
+  unsigned int nProcessors() const {return rawParams.nProcessors();};
+  unsigned int nLogicRegions() const {return rawParams.nLogicRegions();};
+  unsigned int nInputs() const {return rawParams.nInputs();};
+  unsigned int nGoldenPatterns() const {return rawParams.nGoldenPatterns();};
+
+  const std::map<int,int>& getHwToLogicLayer() const {return hwToLogicLayer;}
+  const std::map<int,int>& getLogicToHwLayer() const {return logicToHwLayer;}
+  const std::map<int,int>& getLogicToLogic() const {return logicToLogic;}
+  const std::set<int>& getBendingLayers() const {return bendingLayers;}
+  const std::vector<int>& getRefToLogicNumber() const {return refToLogicNumber;}
+
+  const std::vector<unsigned int>& getBarrelMin() const {return barrelMin;}
+  const std::vector<unsigned int>& getBarrelMax() const {return barrelMax;}
+  const std::vector<unsigned int>& getEndcap10DegMin() const {return endcap10DegMin;}
+  const std::vector<unsigned int>& getEndcap10DegMax() const {return endcap10DegMax;}
+  const std::vector<unsigned int>& getEndcap20DegMin() const {return endcap20DegMin;}
+  const std::vector<unsigned int>& getEndcap20DegMax() const {return endcap20DegMax;}
+
+  const std::vector<std::vector<int> >& getProcessorPhiVsRefLayer() const {return processorPhiVsRefLayer;}
+  const std::vector<std::vector<std::vector<std::pair<int,int> > > >& getRegionPhisVsRefLayerVsInput() const {return regionPhisVsRefLayerVsInput;}
+  const std::vector<std::vector<RefHitDef> >& getRefHitsDefs() const {return refHitsDefs;}
+
+  const vector3D_pair & getConnections() const {return connections;};
+
+  vector4D & getMeasurements4D() {return measurements4D;}
+  vector4D & getMeasurements4Dref() {return measurements4Dref;}
+
+  const vector4D & getMeasurements4D() const {return measurements4D;}
+  const vector4D & getMeasurements4Dref() const {return measurements4Dref;}
+  
   friend std::ostream & operator << (std::ostream &out, const OMTFConfiguration & aConfig);
 
-  static unsigned int fwVersion;
-  static float minPdfVal;  
-  static unsigned int nLayers;
-  static unsigned int nHitsPerLayer;
-  static unsigned int nRefLayers;
-  static unsigned int nPhiBits;
-  static unsigned int nPdfAddrBits;
-  static unsigned int nPdfValBits;
-  static unsigned int nPhiBins;
-  static unsigned int nRefHits;
-  static unsigned int nTestRefHits;
-  static unsigned int nProcessors;
-  static unsigned int nLogicRegions;
-  static unsigned int nInputs;
-  static unsigned int nGoldenPatterns;
-    
-  static std::map<int,int> hwToLogicLayer;
-  static std::map<int,int> logicToHwLayer;
-  static std::map<int,int> logicToLogic;
-  static std::set<int> bendingLayers;
-  static std::vector<int> refToLogicNumber;
+ private:
+
+  L1TMuonOverlapParams rawParams;
+     
+  std::map<int,int> hwToLogicLayer;
+  std::map<int,int> logicToHwLayer;
+  std::map<int,int> logicToLogic;
+  std::set<int> bendingLayers;
+  std::vector<int> refToLogicNumber;
 
   ///Starting and final sectors connected to
   ///processors.
   ///Index: processor number
-  static std::vector<unsigned int> barrelMin;
-  static std::vector<unsigned int> barrelMax;
-  static std::vector<unsigned int> endcap10DegMin;
-  static std::vector<unsigned int> endcap10DegMax;
-  static std::vector<unsigned int> endcap20DegMin;
-  static std::vector<unsigned int> endcap20DegMax;
+   std::vector<unsigned int> barrelMin;
+   std::vector<unsigned int> barrelMax;
+   std::vector<unsigned int> endcap10DegMin;
+   std::vector<unsigned int> endcap10DegMax;
+   std::vector<unsigned int> endcap20DegMin;
+   std::vector<unsigned int> endcap20DegMax;
     
   ///Starting iPhi for each processor and each referecne layer    
   ///Global phi scale is used
   ///First index: processor number
   ///Second index: referecne layer number
-  static std::vector<std::vector<int> > processorPhiVsRefLayer;
-
+  std::vector<std::vector<int> > processorPhiVsRefLayer;
+  
   ///Begin and end local phi for each logis region 
   ///First index: input number
   ///Second index: reference layer number
   ///Third index: region
   ///pair.first: starting phi of region (inclusive)
   ///pair.second: ending phi of region (inclusive)
-  static std::vector<std::vector<std::vector<std::pair<int,int> > > >regionPhisVsRefLayerVsInput;
+  std::vector<std::vector<std::vector<std::pair<int,int> > > >regionPhisVsRefLayerVsInput;
 
   ///Vector with definitions of reference hits
   ///Vector has fixed size of nRefHits
   ///Order of elements defines priority order
   ///First index: processor number (0-5)
   ///Second index: ref hit number (0-127)
-  static std::vector<std::vector<RefHitDef> > refHitsDefs;
+  std::vector<std::vector<RefHitDef> > refHitsDefs;
 
   ///Map of connections
-  typedef std::vector< std::pair<unsigned int, unsigned int> > vector1D_A;
-  typedef std::vector<vector1D_A > vector2D_A;
-  typedef std::vector<vector2D_A > vector3D_A;
-  static vector3D_A connections;
+  vector3D_pair connections;
 
-  ///Temporary hack to pass data from deep inside class
-  ///Matrices are used during creation of the connections tables.
-  typedef std::vector<int> vector1D;
-  typedef std::vector<vector1D > vector2D;
-  typedef std::vector<vector2D > vector3D;
-  typedef std::vector<vector3D > vector4D;
-  static vector4D measurements4D;
-  static vector4D measurements4Dref;
-
-  ///Find logic region number using first input number
-  ///and then local phi value. The input and phi
-  ///ranges are taken from DB. 
-  static unsigned int getRegionNumberFromMap(unsigned int iInput,
-					     unsigned int iRefLayer,					     
-					     int iPhi);
-  
-  ///Check if given referecne hit is
-  ///in phi range for some logic cone.
-  ///Care is needed arounf +Pi and +2Pi points
-  static bool isInRegionRange(int iPhiStart,
-			    unsigned int coneSize,
-			    int iPhi);
-
-
-  ///Return global phi for beggining of given processor
-  ///Uses minim phi over all reference layers.
-  static int globalPhiStart(unsigned int iProcessor);
-
-  ///Return layer number encoding subsystem, and
-  ///station number in a simple formula:
-  /// aLayer+100*detId.subdetId()
-  ///where aLayer is a layer number counting from vertex
-  static uint32_t getLayerNumber(uint32_t rawId);
+  ///4D matrices used during creation of the connections tables.
+  vector4D measurements4D;
+  vector4D measurements4Dref;
 
 };
 

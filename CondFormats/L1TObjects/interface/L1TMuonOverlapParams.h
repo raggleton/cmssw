@@ -113,31 +113,31 @@ class L1TMuonOverlapParams {
   void setGeneralParams (const std::vector<int> & paramsVec) { pnodes_[GENERAL].type_ = "INT"; pnodes_[GENERAL].iparams_ = paramsVec;}
 
   ///Access to specific general settings.
-  int nPdfAddrBits() const { return pnodes_[GENERAL].iparams_[GENERAL_ADDRBITS];};
+  unsigned int nPdfAddrBits() const { return pnodes_[GENERAL].iparams_[GENERAL_ADDRBITS];};
 
-  int nPdfValBits() const { return pnodes_[GENERAL].iparams_[GENERAL_VALBITS];};
+  unsigned int nPdfValBits() const { return pnodes_[GENERAL].iparams_[GENERAL_VALBITS];};
 
-  int nHitsPerLayer() const { return pnodes_[GENERAL].iparams_[GENERAL_HITSPERLAYER];};
+  unsigned int nHitsPerLayer() const { return pnodes_[GENERAL].iparams_[GENERAL_HITSPERLAYER];};
 
-  int nPhiBits() const { return pnodes_[GENERAL].iparams_[GENERAL_PHIBITS];};
+  unsigned int nPhiBits() const { return pnodes_[GENERAL].iparams_[GENERAL_PHIBITS];};
 
-  int nPhiBins() const { return pnodes_[GENERAL].iparams_[GENERAL_PHIBINS];};
+  unsigned int nPhiBins() const { return pnodes_[GENERAL].iparams_[GENERAL_PHIBINS];};
 
-  int nRefHits() const { return pnodes_[GENERAL].iparams_[GENERAL_NREFHITS];};
+  unsigned int nRefHits() const { return pnodes_[GENERAL].iparams_[GENERAL_NREFHITS];};
     
-  int nTestRefHits() const { return pnodes_[GENERAL].iparams_[GENERAL_NTESTREFHITS];};
+  unsigned int nTestRefHits() const { return pnodes_[GENERAL].iparams_[GENERAL_NTESTREFHITS];};
 
-  int nProcessors() const { return pnodes_[GENERAL].iparams_[GENERAL_NPROCESSORS];};
+  unsigned int nProcessors() const { return pnodes_[GENERAL].iparams_[GENERAL_NPROCESSORS];};
 
-  int nLogicRegions() const { return pnodes_[GENERAL].iparams_[GENERAL_NLOGIC_REGIONS];};
+  unsigned int nLogicRegions() const { return pnodes_[GENERAL].iparams_[GENERAL_NLOGIC_REGIONS];};
 
-  int nInputs() const { return pnodes_[GENERAL].iparams_[GENERAL_NINPUTS];};
+  unsigned int nInputs() const { return pnodes_[GENERAL].iparams_[GENERAL_NINPUTS];};
 
-  int nLayers() const { return pnodes_[GENERAL].iparams_[GENERAL_NLAYERS];};
+  unsigned int nLayers() const { return pnodes_[GENERAL].iparams_[GENERAL_NLAYERS];};
 
-  int nRefLayers() const { return pnodes_[GENERAL].iparams_[GENERAL_NREFLAYERS];};
+  unsigned int nRefLayers() const { return pnodes_[GENERAL].iparams_[GENERAL_NREFLAYERS];};
 
-  int nGoldenPatterns() const { return pnodes_[GENERAL].iparams_[GENERAL_NGOLDENPATTERNS];};
+  unsigned int nGoldenPatterns() const { return pnodes_[GENERAL].iparams_[GENERAL_NGOLDENPATTERNS];};
     
   ///Connections definitions
   void setLayerMap(const  std::vector<LayerMapNode> &aVector) { layerMap_ = aVector;}
