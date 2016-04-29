@@ -72,13 +72,13 @@ def getJECFromSQLite(process):
             cms.PSet(
                 record = cms.string('JetCorrectionsRecord'),
                 # for data
-                tag    = cms.string('JetCorrectorParametersCollection_Summer15_25nsV6_DATA_AK4PFchs'),
+                tag    = cms.string('JetCorrectorParametersCollection_Fall15_25nsV2_DATA_AK4PFchs'),
                 # for MC
                 #tag    = cms.string('JetCorrectorParametersCollection_Fall15_25nsV2_MC_AK4PFchs'),
-                label  = cms.untracked.string('AK4PFCHS')
+                label  = cms.untracked.string('AK4PFchs')
                 ),
             ), 
-        connect = cms.string('sqlite:Summer15_25nsV6_DATA.db')
+        connect = cms.string('sqlite:Fall15_25nsV2_DATA.db')
         # uncomment above tag lines and this comment to use MC JEC
         # connect = cms.string('sqlite:Fall15_25nsV2_MC.db')
         )
