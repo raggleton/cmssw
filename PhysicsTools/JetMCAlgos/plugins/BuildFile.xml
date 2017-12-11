@@ -8,6 +8,8 @@
 <use name="SimDataFormats/JetMatching"/>
 <use name="SimDataFormats/GeneratorProducts"/>
 <use name="DataFormats/HepMCCandidate"/>
+<use name="DataFormats/Common"/>
+<use name="DataFormats/PatCandidates"/>
 <use name="fastjet"/>
 <library file="*.cc" name="PhysicsToolsJetMCAlgosPlugins">
 </library>
