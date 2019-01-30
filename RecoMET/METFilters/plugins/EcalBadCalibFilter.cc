@@ -162,6 +162,7 @@ bool EcalBadCalibFilter::filter(edm::StreamID, edm::Event & iEvent, const edm::E
       if (debug_) {
 	edm::LogInfo("EcalBadCalibFilter") << "DUMP EVENT" << std::endl;
       }
+      break;
     }
 
   }
