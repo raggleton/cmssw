@@ -681,12 +681,14 @@ JetFlavourClustering::setFlavours(const reco::GenParticleRefVector& clusteredbHa
    else if( !clusteredcHadrons.empty() && clusteredbHadrons.empty() )
      hadronFlavour = 4;
    // set parton-based flavour
-   if( flavourParton.isNull() )
-   {
-     if( hardestParton.isNonnull() ) partonFlavour = hardestParton->pdgId();
-   }
-   else
-     partonFlavour = flavourParton->pdgId();
+   // if( flavourParton.isNull() )
+   // {
+   // ROBIN EDIT: don't allow it to override with flavourParton,
+   // just take the hardest parton
+   if ( hardestParton.isNonnull() ) partonFlavour = hardestParton->pdgId();
+   // }
+   // else
+   //   partonFlavour = flavourParton->pdgId();
 
    // if enabled, check for conflicts between hadron- and parton-based flavours and give priority to the hadron-based flavour
    if( hadronFlavourHasPriority_ )
